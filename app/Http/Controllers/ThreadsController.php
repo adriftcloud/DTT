@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only('store');
+    }
+
+
     public function index()
     {
         $threads = Thread::query()->latest()->get();
@@ -26,11 +28,20 @@ class ThreadsController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function store(Request $request)
     {
-        //
-    }
+        $thread = Thread::create([
+            "user_id" => auth()->id(),
+            "title" => request('title'),
+            "body" => request('body'),
+        ]);
 
+        return $thread->path();
+    }
 
 
     public function show(Thread $thread)

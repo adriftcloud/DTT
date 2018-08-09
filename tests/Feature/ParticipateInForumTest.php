@@ -38,4 +38,6 @@ class ParticipateInForumTest extends TestCase
         $this->get('/threads/' . $thread->id)->assertSee($reply->body);
 
     }
+
+
 }
